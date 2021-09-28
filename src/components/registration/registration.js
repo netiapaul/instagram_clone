@@ -1,4 +1,4 @@
-import "./login.css";
+import "./registration.css";
 import { useFormik } from "formik";
 import facebook from "../../assets/images/facebook.png";
 import Download from "../../assets/images/download.png";
@@ -15,6 +15,12 @@ const validate = (values) => {
     errors.email = "Invalid email address";
   }
 
+  if (!values.fullnames) {
+    errors.fullnames = "Full Name cannot be empty";
+  } else if (values.fullnames.length > 15) {
+    errors.fullnames = "Must be 15 characters or less";
+  }
+
   if (!values.password) {
     errors.password = "Required";
   } else if (values.password.length > 15) {
@@ -24,13 +30,14 @@ const validate = (values) => {
   return errors;
 };
 
-const Login = () => {
+const Registration = () => {
   // Pass the useFormik() hook initial form values, a validate function that will be called when
   // form values change or fields are blurred, and a submit function that will
   // be called when the form is submitted
   const formik = useFormik({
     initialValues: {
       email: "",
+      fullnames: "",
       password: "",
     },
     validate,
@@ -63,6 +70,24 @@ const Login = () => {
             </div>
 
             <div className="mb-3">
+              {/* <label htmlFor="email">Email Address</label> */}
+              <input
+                id="fullnames"
+                name="fullnames"
+                type="text"
+                placeholder="fullnames"
+                className="form-control"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.fullnames}
+              />
+
+              {formik.touched.fullnames && formik.errors.fullnames ? (
+                <div className="text-danger">{formik.errors.fullnames}</div>
+              ) : null}
+            </div>
+
+            <div className="mb-3">
               {/* <label htmlFor="password">Last Name</label> */}
               <input
                 id="password"
@@ -82,7 +107,7 @@ const Login = () => {
 
             <div className="d-grid gap-2 col mx-auto">
               <button type="submit" className="btn btn-primary">
-                Log In
+                Sign Up
               </button>
             </div>
           </form>
@@ -112,7 +137,7 @@ const Login = () => {
       <div className="card my-3">
         <div className="card-body text-center">
           <p>
-            Dont have an account? <Link to="/registration">Sign Up</Link>
+            Dont have an account? <Link to="/">Sign In</Link>
           </p>
         </div>
       </div>
@@ -135,4 +160,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Registration;
